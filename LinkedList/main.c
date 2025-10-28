@@ -22,6 +22,7 @@ Node *CreateNode(uint32_t input)
     return TempNode;
 }
 
+// TODO: Add error checking for NULL head pointer and allow appending to empty list if true
 // Function to append a new node with given data to the end of the linked list, takes head pointer as argument
 void AppendNode(uint32_t input, Node *Head)
 {
@@ -38,8 +39,28 @@ void AppendNode(uint32_t input, Node *Head)
     Head->next = tempNode;
 }
 
+// TODO: Fix this function to properly remove a node by index, causes segmentation fault currently
+void RemoveNodebyIndex(uint32_t index, Node *Head)
+{
+    Node *previousNode = Head;
+
+    // iterate to the node requested
+    for (uint32_t i = 0; i < index; i++)
+    {
+        previousNode = Head;
+        Head = Head->next;
+    }
+
+    // Set the previous node to the current node's next node.
+    previousNode->next = Head->next;
+
+    Head->next = NULL;
+
+    free(Head);
+}
+
 // Global pointer to the head of the linked list, this acts as the linked list itself
-Node *linkedlistptr;
+Node *linkedlistptr = NULL;
 
 int main()
 {
@@ -52,17 +73,26 @@ int main()
     // test1.data = 31;
     // test1.next = &test2;
 
-    linkedlistptr = CreateNode(123);
+    // linkedlistptr = CreateNode(123);
 
-    AppendNode(456, linkedlistptr);
-    AppendNode(4564, linkedlistptr);
-    AppendNode(42663, linkedlistptr);
-    AppendNode(453455, linkedlistptr);
-    AppendNode(713, linkedlistptr);
-    AppendNode(4941, linkedlistptr);
+    // AppendNode(456, linkedlistptr);
+    // AppendNode(4564, linkedlistptr);
+    // AppendNode(42663, linkedlistptr);
+    // AppendNode(453455, linkedlistptr);
+    // AppendNode(713, linkedlistptr);
+    // AppendNode(4941, linkedlistptr);
 
     // printf("[%d]->", linkedlistptr->data);
     // linkedlistptr = linkedlistptr->next;
+
+    linkedlistptr = CreateNode(0);
+
+    uint32_t test[] = {1239, 3359, 5939, 592, 39, 148};
+
+    for (uint8_t i = 0; i < (sizeof(test) / sizeof(test[0])); i++)
+    {
+        AppendNode(test[i], linkedlistptr);
+    }
 
     while (linkedlistptr->next != NULL)
     {
@@ -73,6 +103,15 @@ int main()
 
     printf("[%d]->", linkedlistptr->data);
     printf("None\n");
+
+    RemoveNodebyIndex(3, linkedlistptr);
+
+    while (linkedlistptr->next != NULL)
+    {
+
+        printf("[%d]->", linkedlistptr->data);
+        linkedlistptr = linkedlistptr->next;
+    }
 
     // while (linkedlistptr->next != NULL)
     // {
