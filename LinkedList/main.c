@@ -2,34 +2,44 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+// Define the structure for a generic node in the linked list, holds some 32-bit data and pointer to next node
 typedef struct NodeType
 {
     uint32_t data;
     struct NodeType *next;
 } Node;
 
-Node *linkedlistptr;
-
+// Function to create a new node with given data, returns pointer to the new node
 Node *CreateNode(uint32_t input)
 {
+    // dynamically allocate memory for a new node using malloc
     Node *TempNode = (Node *)malloc(sizeof(Node));
+
+    // need to use pointer based member access since TempNode is a pointer
     TempNode->data = input;
     TempNode->next = NULL;
 
     return TempNode;
 }
 
+// Function to append a new node with given data to the end of the linked list, takes head pointer as argument
 void AppendNode(uint32_t input, Node *Head)
 {
+    // Create a new node with the given input data using CreateNode function
     Node *tempNode = CreateNode(input);
 
+    // Traverse to the end of the linked list
     while (Head->next != NULL)
     {
         Head = Head->next;
     }
 
+    // Once at the end, link the new node to the last node
     Head->next = tempNode;
 }
+
+// Global pointer to the head of the linked list, this acts as the linked list itself
+Node *linkedlistptr;
 
 int main()
 {
